@@ -81,7 +81,10 @@ flash_info_t flash_info[CONFIG_SYS_MAX_FLASH_BANKS];		/* FLASH chips info */
 #define W25Q256FV		0x1940ef
 #define MX25L1605D		0x1520C2
 #define MX25L12805D		0x1820C2
+#if 0
 #define MX25L25635E		0x1920C2
+#endif
+#define MX25L25735E             0x1920C2
 #define SST25VF016B             0x4125bf
 #define SST25VF064C             0x4b25bf
 #define AT25DF161		0x02461F
@@ -785,7 +788,7 @@ static ulong flash_get_size (ulong base, int banknum)
 	    info->address32 = 1;        	
 #endif
 	    break;
-
+#if 0
         case MX25L25635E:
 	    info->sector_count = 256;
 	    info->size = 0x1000000;        	
@@ -816,7 +819,7 @@ static ulong flash_get_size (ulong base, int banknum)
 #endif            
 #endif             
             break;
-
+#endif 
         case MX25L12805D:
 	    info->sector_count = 256;
 	    info->size = 0x1000000;        	
@@ -935,6 +938,18 @@ AST2300 A0 SPI can't run faster than 50Mhz
             EraseClk = 25;
             ReadClk  = 50;            
             break;
+
+	case MX25L25735E:
+	   info->sector_count = 512;
+	   info->size = 0x2000000;
+	   erase_region_size  = 0x10000;
+	   info->dualport = 0;
+	   info->dummybyte = 1;
+	   WriteClk = 50;
+	   EraseClk = 20;
+	   ReadClk  = 50;
+//setenv("rootfs_size", "1D00000");
+	   break;
                                                                       
         default:	/* use JEDEC ID */
             erase_region_size  = 0x10000;
